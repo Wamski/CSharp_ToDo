@@ -1,0 +1,39 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        Width="800"
+        Height="450"
+        CanResize="False"
+        x:Class="ToDoApp.MainWindow"
+        Title="ToDoApp"
+        
+        TransparencyLevelHint="AcrylicBlur"
+        Background="{DynamicResource TransparentBackground}"
+        ExtendClientAreaToDecorationsHint="True"
+        >
+        
+        <Grid ColumnDefinitions="200, *">
+                
+                <Border Grid.Column="0" Padding="20, 30, 20, 20" >
+                        <Grid RowDefinitions="*, Auto">
+                                <!-- Sidebar -->
+                                <StackPanel Grid.Row="0" x:Name="ProjectStack">
+                                        <Image Source="/Assets/Images/Logo.png" Width="160"/>
+                                        
+                                        
+                                </StackPanel>
+                                <StackPanel Grid.Row="1">
+                                        <Button Content="Create a Project" Click="OnCreateProjectClicked"
+                                                Foreground="{DynamicResource FontColor}"
+                                                />
+                                </StackPanel>
+                        </Grid>
+                </Border>
+                <Border Grid.Column="1" Background="{DynamicResource PrimaryBackground}">
+                        
+                </Border>
+        </Grid>
+    
+</Window>

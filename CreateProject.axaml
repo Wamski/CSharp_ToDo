@@ -1,0 +1,32 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="400"
+        Width="400"
+        Height="400"
+        CanResize="False"
+        x:Class="ToDoApp.CreateProject"
+        Title="CreateProject"
+        TransparencyLevelHint="AcrylicBlur"
+        Background="{DynamicResource TransparentBackground}"
+        ExtendClientAreaToDecorationsHint="True"
+        >
+        <Grid RowDefinitions="150, 100, 150">
+                <StackPanel Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center">
+                        <TextBlock FontSize="40" FontFamily="Helvetica" FontWeight="Bold">Create a Project!</TextBlock>
+                        
+                        
+                </StackPanel>
+                <StackPanel Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center">
+                        <TextBox Watermark="Project Name Here" Width="200" HorizontalContentAlignment="Center" x:Name="ProjectNameInput"></TextBox>
+                </StackPanel>
+                <StackPanel Grid.Row="2" VerticalAlignment="Center">
+                        <Grid ColumnDefinitions="200,200">
+                                <Button Content="Cancel" Grid.Column="0" HorizontalAlignment="Center" Width="100" HorizontalContentAlignment="Center" Click="OnCancelClicked"></Button>
+                                <Button Content="Create" Grid.Column="1" HorizontalAlignment="Center" Width="100" HorizontalContentAlignment="Center" Click="OnCreateClicked"></Button>
+                        </Grid>
+                </StackPanel>
+                
+        </Grid>
+</Window>

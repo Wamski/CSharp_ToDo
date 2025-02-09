@@ -1,0 +1,20 @@
+<Application xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="ToDoApp.App"
+             RequestedThemeVariant="Dark">
+    <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
+
+    <Application.Styles>
+        <FluentTheme />
+        <StyleInclude Source="Styles/AppDefault.axaml"></StyleInclude>
+    </Application.Styles>
+    <Application.Resources>
+        <SolidColorBrush x:Key="PrimaryBackground">#2b2c2c</SolidColorBrush>
+        <SolidColorBrush x:Key="SecondaryBackground">#2e2f2f</SolidColorBrush>
+        <SolidColorBrush x:Key="FontColor">#979797</SolidColorBrush>
+        <SolidColorBrush x:Key="TransparentBackground">#50000000</SolidColorBrush>
+        
+    </Application.Resources>
+    
+    
+</Application>
