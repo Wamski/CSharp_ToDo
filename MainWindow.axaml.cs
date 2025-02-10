@@ -1,3 +1,4 @@
+using System;
 using Avalonia.Controls;
 
 
@@ -14,5 +15,15 @@ public partial class MainWindow : Window
     {
         var puCreateProject = new CreateProject(this);
         puCreateProject.Show();
+    }
+
+    public void OnProjectClicked(object sender, Avalonia.Interactivity.RoutedEventArgs e)
+    {
+        Button btn = sender as Button;
+        string projectName = btn.Content.ToString();
+
+        ProjectNameOverview.Text = projectName + " Overview";
+
+
     }
 }

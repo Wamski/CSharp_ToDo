@@ -29,6 +29,7 @@ public partial class CreateProject : Window
             Content = name,
             Background = Brushes.Transparent
         };
+        btn.Click += _mainWindow.OnProjectClicked;
         _mainWindow.ProjectStack.Children.Add(btn);
         
         this.Close();

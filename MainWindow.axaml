@@ -32,7 +32,27 @@
                         </Grid>
                 </Border>
                 <Border Grid.Column="1" Background="{DynamicResource PrimaryBackground}">
-                        
+                        <Grid RowDefinitions="75, *">
+                                <Border Grid.Row="0" Padding="10, 30, 10, 10">
+                                        <StackPanel>
+                                                <TextBlock FontSize="25" FontWeight="Bold" FontFamily="Helvetica" Text="Overview" x:Name="ProjectNameOverview"></TextBlock>
+                                        </StackPanel>
+                                        
+                                </Border>
+                                <Border Grid.Row="1" Padding="10, 10, 10, 10" >
+                                        <Border BorderBrush="{DynamicResource FontColor}" BorderThickness="1" CornerRadius="10" Background="{DynamicResource SecondaryBackground}">
+                                                <Border Padding="10">
+                                                        <StackPanel  x:Name="TodoStack">
+                                                                <TextBlock FontSize="20" FontWeight="Light" FontFamily="Helvetica" Text="Todo:" Padding="0,0,0,2"/>
+                                                                <Button HorizontalAlignment="Stretch" Content="Finish the todo app" Foreground="{DynamicResource FontColor}"></Button>
+                                                        </StackPanel>
+                                                </Border>
+                                                
+                                        </Border>
+                                        
+                                        
+                                </Border>
+                        </Grid>
                 </Border>
         </Grid>
     
