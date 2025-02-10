@@ -10,7 +10,7 @@
     </Application.Styles>
     <Application.Resources>
         <SolidColorBrush x:Key="PrimaryBackground">#2b2d2d</SolidColorBrush>
-        <SolidColorBrush x:Key="SecondaryBackground">#2e2f2f</SolidColorBrush>
+        <SolidColorBrush x:Key="SecondaryBackground">#333434</SolidColorBrush>
         <SolidColorBrush x:Key="FontColor">#979797</SolidColorBrush>
         <SolidColorBrush x:Key="TransparentBackground">#50000000</SolidColorBrush>
         
