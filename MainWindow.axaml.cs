@@ -1,9 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Runtime.Versioning;
 using Avalonia;
 using Newtonsoft.Json;
 using Avalonia.Controls;
+using Avalonia.Interactivity;
 using Avalonia.Media;
 using Avalonia.Layout;
 
@@ -34,8 +37,8 @@ public partial class MainWindow : Window
         // Write back data to json
         WriteJSON();
         
-        
         TodoStack.Children.Clear();
+        CompletedStack.Children.Clear();
         
         Button btn = sender as Button;
         string projectName = btn.Content.ToString();
@@ -70,6 +73,7 @@ public partial class MainWindow : Window
         }
         
         TodoStack.Children.Clear();
+        CompletedStack.Children.Clear();
         
         // Call visual add
         foreach (var item in items)
@@ -100,13 +104,40 @@ public partial class MainWindow : Window
         };
 
         btn.Click += OnTodoClicked;
+        
+        // Context Menu
+        ContextMenu cm = new ContextMenu();
+        MenuItem mi = new MenuItem
+        {
+            Header = "Remove",
+            SelectedValue = Name,
+        };
 
-        TodoStack.Children.Add(btn);
+        mi.Click += removeItemClicked;
+        
+        cm.Items.Add(mi);
+        
+        btn.ContextMenu = cm;
+
+        if (Completed)
+        {
+            btn.Foreground = Brushes.Lime;
+            CompletedStack.Children.Add(btn);
+        }
+        else
+        {
+            TodoStack.Children.Add(btn);
+        }
+        
     }
 
     private void OnTodoClicked(object sender, Avalonia.Interactivity.RoutedEventArgs e)
     {
         Button btn = sender as Button;
+        
+        TextBlock tb = btn.Content as TextBlock;
+        
+        String name = tb.Text;
         
         // Toggles the color of the button: Lime signifying completed and white meaning todo
         if (btn.Foreground == Brushes.White)
@@ -114,14 +145,32 @@ public partial class MainWindow : Window
             btn.Foreground = Brushes.Lime;
             TodoStack.Children.Remove(btn);
             CompletedStack.Children.Add(btn);
+            
+            // Mark item completed in items
+            toggleCompleted(name, true);
         }
         else
         {
             btn.Foreground = Brushes.White;
             CompletedStack.Children.Remove(btn);
             TodoStack.Children.Add(btn);
+            
+            // Mark item incomplete in items
+            toggleCompleted(name, false);
         }
     }
+    
+    private void toggleCompleted(String name, bool completed = false)
+    {
+        for (int i = 0; i < items.Count; i++)
+        {
+            if (items[i].name == name)
+            {
+                items[i].completed = completed;
+            }
+        }
+    }
+    
 
     private void OnAddTodoClicked(object sender, Avalonia.Interactivity.RoutedEventArgs e)
     {
@@ -172,6 +221,37 @@ public partial class MainWindow : Window
             Console.WriteLine("Directory Not Found");
         }
     }
+
+    private void removeItemClicked(object sender, RoutedEventArgs? e)
+    {
+        // First clear the fields
+        // Removed the item from the object list
+        // Re;rint fields
+        
+        MenuItem mi = sender as MenuItem;
+        
+        String sV = mi.SelectedValue.ToString();
+        
+        
+        TodoStack.Children.Clear();
+        CompletedStack.Children.Clear();
+
+        for (int i = 0; i < items.Count; i++)
+        {
+            if (items[i].name == sV)
+            {
+                items.RemoveAt(i);
+            }
+        }
+
+        // Done this way because if it was but as an else statement it would skip over elements that weren't removed
+        foreach (ToDoItem item in items)
+        {
+            visualToDoAdd(item.name, item.completed);
+        }
+        
+    }
+    
 
     private void onClose(object sender, EventArgs e)
     {
