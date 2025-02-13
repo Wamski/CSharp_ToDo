@@ -139,15 +139,19 @@ public partial class MainWindow : Window
             foreach (string file in files)
             {
                 string name = Path.GetFileNameWithoutExtension(file);
-                Button btn = new Button
+
+                if (name != "")
                 {
-                    Width = 160,
-                    Content = name,
-                    Background = Brushes.Transparent
-                };
-            
-                btn.Click += OnProjectClicked;
-                ProjectStack.Children.Add(btn);
+                    Button btn = new Button
+                    {
+                        Width = 160,
+                        Content = name,
+                        Background = Brushes.Transparent
+                    };
+
+                    btn.Click += OnProjectClicked;
+                    ProjectStack.Children.Add(btn);
+                }
             }
         }
         catch (DirectoryNotFoundException)
