@@ -1,7 +1,7 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using Avalonia;
 using Newtonsoft.Json;
 using Avalonia.Controls;
 using Avalonia.Media;
@@ -20,6 +20,9 @@ public partial class MainWindow : Window
         InitializeComponent();
         
         todoDocs = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "/ToDoApp";
+
+        if (!Directory.Exists(todoDocs)) Directory.CreateDirectory(todoDocs);
+        
         GetProjects(todoDocs);
         
         // Have it save the current list
@@ -81,10 +84,18 @@ public partial class MainWindow : Window
 
     private void visualToDoAdd(string Name, bool Completed = false)
     {
+        TextBlock tb = new TextBlock
+        {
+            Text = Name,
+            TextWrapping = TextWrapping.Wrap,
+        };
+        
         Button btn = new Button
         {
             HorizontalAlignment = HorizontalAlignment.Stretch,
-            Content = Name, 
+            VerticalAlignment = VerticalAlignment.Center,
+            Margin = new Thickness(1),
+            Content = tb, 
             Foreground = Brushes.White,
         };
 
@@ -101,12 +112,14 @@ public partial class MainWindow : Window
         if (btn.Foreground == Brushes.White)
         {
             btn.Foreground = Brushes.Lime;
-            
+            TodoStack.Children.Remove(btn);
+            CompletedStack.Children.Add(btn);
         }
         else
         {
             btn.Foreground = Brushes.White;
-            
+            CompletedStack.Children.Remove(btn);
+            TodoStack.Children.Add(btn);
         }
     }
 
