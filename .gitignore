@@ -3,5 +3,6 @@
 bin/
 obj/
 ToDoApp.sln
+ToDoApp.sln.DotSettings.user
 ToDoApp.csproj
 *.manifest

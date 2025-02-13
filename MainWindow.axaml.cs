@@ -1,35 +1,96 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.IO;
+using Newtonsoft.Json;
 using Avalonia.Controls;
 using Avalonia.Media;
 using Avalonia.Layout;
-
-
 
 namespace ToDoApp;
 
 public partial class MainWindow : Window
 {
     private string currentFile = null;
+
+    private List<ToDoItem> items;
+    private string todoDocs;
     public MainWindow()
     {
         InitializeComponent();
         
-        string todoDocs = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "/ToDoApp";
+        todoDocs = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "/ToDoApp";
         GetProjects(todoDocs);
+        
+        // Have it save the current list
+        this.Closing += onClose;
     }
     
     public void OnProjectClicked(object sender, Avalonia.Interactivity.RoutedEventArgs e)
     {
+        // Write back data to json
+        WriteJSON();
+        
+        
         TodoStack.Children.Clear();
         
         Button btn = sender as Button;
         string projectName = btn.Content.ToString();
 
-        currentFile = projectName;
+        currentFile = projectName + ".json";
         
         ProjectNameOverview.Text = projectName + " Overview";
 
+        // Read file and append to Visual list and itemsList
+        
+        ReadJSON(todoDocs + "/" + currentFile);
+        
+    }
+
+    private void ReadJSON(string filePath)
+    {
+        items = new List<ToDoItem>();
+        
+        if (File.Exists(filePath))
+        {
+            string jsonData = File.ReadAllText(filePath);
+            List<ToDoItem> tempItems = JsonConvert.DeserializeObject<List<ToDoItem>>(jsonData);
+            
+            items = tempItems;
+            
+        }
+        else
+        {
+            File.WriteAllText(filePath, "[\n\n]");
+            TodoStack.Children.Clear();
+            return;
+        }
+        
+        TodoStack.Children.Clear();
+        
+        // Call visual add
+        foreach (var item in items)
+        {
+            if (item is ToDoItem todoItem)
+            {
+                visualToDoAdd(todoItem.name, todoItem.completed);
+            }
+            
+        }
+    }
+
+    private void visualToDoAdd(string Name, bool Completed = false)
+    {
+        Button btn = new Button
+        {
+            HorizontalAlignment = HorizontalAlignment.Stretch,
+            Content = Name, 
+            Foreground = Brushes.White,
+        };
+
+        btn.Click += OnTodoClicked;
+
+        TodoStack.Children.Add(btn);
     }
 
     private void OnTodoClicked(object sender, Avalonia.Interactivity.RoutedEventArgs e)
@@ -52,19 +113,14 @@ public partial class MainWindow : Window
     private void OnAddTodoClicked(object sender, Avalonia.Interactivity.RoutedEventArgs e)
     {
         if (currentFile == null || TodoItemInput.Text == "") return;
+
+        visualToDoAdd(TodoItemInput.Text, false);
+
+        // Apend a new ToDoItem to the list
+        ToDoItem temp = new ToDoItem {name = TodoItemInput.Text, completed = false};
         
-        // <Button HorizontalAlignment="Stretch" Content="Finish the todo app" Foreground="{DynamicResource FontColor}"></Button>
-        Button btn = new Button
-        {
-            HorizontalAlignment = HorizontalAlignment.Stretch,
-            Content = TodoItemInput.Text, 
-            Foreground = Brushes.White,
-        };
-
-        btn.Click += OnTodoClicked;
-
-        TodoStack.Children.Add(btn);
-
+        items.Add(temp);
+        
         TodoItemInput.Clear();
     }
     
@@ -72,6 +128,7 @@ public partial class MainWindow : Window
     {
         var puCreateProject = new CreateProject(this);
         puCreateProject.Show();
+        
     }
 
     private void GetProjects(string path)
@@ -97,7 +154,20 @@ public partial class MainWindow : Window
         {
             Console.WriteLine("Directory Not Found");
         }
+    }
+
+    private void onClose(object sender, EventArgs e)
+    {
+        WriteJSON();
+    }
+    private void WriteJSON()
+    {
+        if (currentFile == null) return;
+        string jsonFile = todoDocs + "/" + currentFile;
         
+        string json = JsonConvert.SerializeObject(items, Formatting.Indented);
+        
+        File.WriteAllText(jsonFile, json);
     }
     
 }
